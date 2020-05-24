@@ -52,7 +52,7 @@ class MaskItem extends StatelessWidget {
               ),
               child: Image.network(
                 image,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
           ),

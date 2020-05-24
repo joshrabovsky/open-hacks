@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/favourites_screen.dart';
+import '../screens/videos_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   Widget _buildListTile(String title, IconData icon, Function onTap) {
@@ -36,6 +37,13 @@ class MyDrawer extends StatelessWidget {
             Icons.favorite,
             () {
               Navigator.of(context).popAndPushNamed(FavouritesScreen.routeName);
+            },
+          ),
+          _buildListTile(
+            "Videos",
+            Icons.video_library,
+            () {
+              Navigator.of(context).popAndPushNamed(VideosScreen.routeName);
             },
           ),
         ],

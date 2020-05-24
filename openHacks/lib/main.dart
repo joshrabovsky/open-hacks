@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         home: MaskListScreen(),
         routes: {
           FavouritesScreen.routeName : (ctx) => FavouritesScreen(),
+          VideosScreen.routeName : (ctx) => VideosScreen(),
         },
       ),
     );
