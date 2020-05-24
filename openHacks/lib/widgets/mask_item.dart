@@ -1,6 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/info.dart';
 
 class MaskItem extends StatelessWidget {
+  final String image;
+  final String website;
+  final int index;
+  final bool isFavouriteScreen;
+  MaskItem({this.index, this.website, this.image, this.isFavouriteScreen});
+
+  Future<void> _launchUrl(String url, BuildContext context) async {
+    try {
+      await launch(url);
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text("An error has occured"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Okay"),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -19,24 +50,37 @@ class MaskItem extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              child: Center(
-                child: Text(
-                  "Insert image here",
-                  textAlign: TextAlign.center,
-                ),
+              child: Image.network(
+                image,
+                fit: BoxFit.cover,
               ),
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Container(
-                child: Text('Go to website'),
+              FlatButton(
+                child: Text("Go To Website"),
+                onPressed: () {
+                  _launchUrl(website, context);
+                },
               ),
-              IconButton(
-                icon: Icon(Icons.favorite),
-                onPressed: () {},
-              ),
+              if (!isFavouriteScreen)
+                Consumer<Info>(
+                  builder: (ctx, info, _) => IconButton(
+                    icon: Icon(
+                      info.items[index].isFavourite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: info.items[index].isFavourite
+                          ? Colors.red
+                          : Colors.black,
+                    ),
+                    onPressed: () {
+                      info.updateFavourite(index);
+                    },
+                  ),
+                ),
             ],
           ),
         ],
